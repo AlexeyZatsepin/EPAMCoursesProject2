@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class View {
     public static final String SELECT_FILE_MENU= " Please select file by number: ";
-
     public static final String INPUT_INT_DATA = "Input INT value = ";
     public static final String WRONG_INPUT_INT_DATA = "Wrong input! Repeat please! ";
+
 
     void printToConsole(String text){
         System.out.println(text);
@@ -23,5 +23,9 @@ public class View {
         for (Object i :list) {
             System.out.println(String.valueOf(k++)+ ". " + i);
         }
+    }
+
+    void printExeption(Exception e){
+        System.err.println(e.toString());
     }
 }

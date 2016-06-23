@@ -2,3 +2,5 @@ Asdsdfsdfsdf sadas asasd-asd.
 asdasdasdasd.
 asdasdasdasdasd.
 asd asdasd .
+
+class A{}.

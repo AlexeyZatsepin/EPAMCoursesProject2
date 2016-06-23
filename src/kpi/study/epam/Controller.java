@@ -6,11 +6,11 @@ import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * EPAM_Project2_doc_reader
@@ -19,6 +19,7 @@ import java.util.*;
  * @author Alex
  */
 public class Controller {
+    public static final String KEYWORD_PATTERN = "(class|interface|import|package) +\\w+?";
 
     private View view;
 
@@ -46,7 +47,7 @@ public class Controller {
                 text = readFile(file);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            view.printExeption(e);
         }
         List<Sentence> sentences = parseText(text);
         //Collections.sort(sentences, (o1, o2) -> Integer.compare(o1.size(),o2.size()));
@@ -88,52 +89,47 @@ public class Controller {
         List<Sentence> list = new ArrayList<>();
         String [] all= text.split("[\\.!\\?]");
         for (String s : all) {
-            //if (s.matches("[A-Za-z]")){
+            if (!isCode(s.replace("\n", ""))){
                 Sentence sentence = new Sentence();
                 for (String c:s.split(",: ")){
                     sentence.addWord(c.trim());
                 }
                 list.add(sentence);
-            //}
+            }
         }
         return list;
     }
 
-    public String readDocFile(File file) {
+    public String readDocFile(File file) throws IOException {
         String result ="";
-        try {
-            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
-
-            HWPFDocument doc = new HWPFDocument(fis);
-
-            WordExtractor we = new WordExtractor(doc);
-
-            String[] paragraphs = we.getParagraphText();
-            for (String para : paragraphs) {
-                result+=" "+para;
-            }
-            fis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+        HWPFDocument doc = new HWPFDocument(fis);
+        WordExtractor we = new WordExtractor(doc);
+        String[] paragraphs = we.getParagraphText();
+        for (String para : paragraphs) {
+            result+=" "+para;
         }
+        fis.close();
         return result;
     }
-    public String readDocxFile(File file) {
+    public String readDocxFile(File file) throws IOException {
         String result = "";
-        try {
-            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
-
-            XWPFDocument document = new XWPFDocument(fis);
-
-            XWPFParagraph[] paragraphs = document.getParagraphs();
-
-            for (XWPFParagraph para : paragraphs) {
-                result+=" "+para.getText();
-            }
-            fis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+        XWPFDocument document = new XWPFDocument(fis);
+        XWPFParagraph[] paragraphs = document.getParagraphs();
+        for (XWPFParagraph para : paragraphs) {
+            result+=" "+para.getText();
         }
+        fis.close();
         return result;
+    }
+    private boolean isCode(String s) {
+        String [] keywords = {"class","interface","package","import"};
+        for (String str:keywords){
+            if (s.startsWith(str)){
+                return true;
+            }
+        }
+        return false;
     }
 }
