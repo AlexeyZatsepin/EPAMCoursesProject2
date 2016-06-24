@@ -6,20 +6,21 @@ import java.util.List;
 /**
  * EPAM_Project2_doc_reader
  * Created 6/10/16, with IntelliJ IDEA
- *
+ * Basic language comparable class , that describe sentence entity
  * @author Alex
  */
 public class Sentence implements Comparable<Sentence>{
+    // sentence is list of words
     private List<String> words;
 
-    public Sentence() {
+    public Sentence() { 
         this.words = new LinkedList<>();
     }
 
     public void addWord(String word){
         words.add(word);
     }
-
+    
     public int size(){
         int size =0;
         for (String s:words){
