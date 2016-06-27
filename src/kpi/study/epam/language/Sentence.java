@@ -11,19 +11,20 @@ import java.util.List;
  */
 public class Sentence implements Comparable<Sentence>{
     // sentence is list of words
-    private List<String> words;
+    private List<Word> words;
 
     public Sentence() { 
         this.words = new LinkedList<>();
     }
 
-    public void addWord(String word){
+    public void addWord(Word word){
         words.add(word);
     }
-    
+
+    // @return size of sentence
     public int size(){
         int size =0;
-        for (String s:words){
+        for (Word s:words){
             size+=s.length();
         }
         return size;
@@ -35,6 +36,6 @@ public class Sentence implements Comparable<Sentence>{
 
     @Override
     public int compareTo(Sentence o) {
-        return Integer.compare(size(),o.size());
+        return Integer.compare(o.size(),size());
     }
 }

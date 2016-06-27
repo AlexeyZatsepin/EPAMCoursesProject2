@@ -25,7 +25,7 @@ public class View {
         }
     }
 
-    void printExeption(Exception e){
+    void printException(Exception e){
         System.err.println(e.toString());
     }
 }
